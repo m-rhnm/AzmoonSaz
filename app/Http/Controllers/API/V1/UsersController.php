@@ -35,4 +35,26 @@ class UsersController extends APIController
             'password' => $request->password
             ]);
     }
+    public function updateInfo(Request $request)
+        {
+            $this->validate($request,[
+                'id'=>'required|string',
+                'fullName' => 'required|string|min:3|max:255',
+                'email' => 'required|email',
+                'mobile' => 'required|string',
+            ]);
+            $this->userRepository->update($request->id,
+            [
+                'fullName' => $request->fullName,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+            ]);
+
+            return $this->respondSuccess('user updated successfully',
+            [
+                'fullName' => $request->fullName,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+            ]);
+        }
 }
