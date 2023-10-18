@@ -14,47 +14,68 @@ class UsersController extends APIController
     }
     public function store(Request $request)
     {
-       $this->validate($request,[
-        'fullName' => 'required|string|min:3|max:255',
+       $this->validate($request,
+        [
+            'fullName' => 'required|string|min:3|max:255',
             'email' => 'required|email',
             'mobile' => 'required|string|',
             'password' => 'required|'
         ]);
 
-        $this->userRepository->create([
-        'fullName' => $request->fullName,
-        'email' => $request->email,
-        'mobile' => $request->mobile,
-        'password' => app('hash')->make($request->password),
+            $this->userRepository->create([
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'password' => app('hash')->make($request->password),
         ]);
 
-        return $this->respondCreate('user created successfully',[
+        return $this->respondCreate('user created successfully',
+        [
             'fullName' => $request->fullName,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'password' => $request->password
-            ]);
+        ]);
     }
     public function updateInfo(Request $request)
-        {
-            $this->validate($request,[
-                'id'=>'required|string',
-                'fullName' => 'required|string|min:3|max:255',
-                'email' => 'required|email',
-                'mobile' => 'required|string',
-            ]);
+    {
+        $this->validate($request,[
+            'id'=>'required|string',
+            'fullName' => 'required|string|min:3|max:255',
+            'email' => 'required|email',
+            'mobile' => 'required|string',
+        ]);
             $this->userRepository->update($request->id,
-            [
-                'fullName' => $request->fullName,
-                'email' => $request->email,
-                'mobile' => $request->mobile,
-            ]);
+        [
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+        ]);
 
             return $this->respondSuccess('user updated successfully',
-            [
-                'fullName' => $request->fullName,
-                'email' => $request->email,
-                'mobile' => $request->mobile,
-            ]);
-        }
+        [
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+        ]);
+    }
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required|string',
+            'password'=>'min:6|required_with:password_repeat|same:password_repeat',
+            'password_repeat'=>'min:6',
+        ]);
+            $this->userRepository->update($request->id,
+        [
+            'password' => app('hash')->make($request->password),
+        ]);
+
+            return $this->respondSuccess('user updated_password successfully',
+        [
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+        ]);
+    }
 }

@@ -18,16 +18,19 @@ class JsonBaseRepository implements RepositoryInterface
             array_push($users,$data);
             file_put_contents('user.json',json_encode($users));
         }
+        
     }
     public function update(int $id,array $data){
         $users = json_decode(file_get_contents('user.json'),true);
         foreach($users as $key=>$user)
         {
              if($user['id'] == $id){
+                //var_dump($user['id']);
                 $user['fullName'] = $data['fullName'] ?? $user['fullName'];
                 $user['email'] = $data['email']  ?? $user['email'];
                 $user['mobile'] = $data['mobile']  ?? $user['mobile'];
-                $user['password'] = $data['mobile']  ?? $user['password'];
+                $user['password'] = $data['password']  ?? $user['password'];
+               // var_dump($user);
                 unset($users[$key]);
                 array_push($users,$user);
                 if(file_exists('user.json')){unlink('user.json');}
