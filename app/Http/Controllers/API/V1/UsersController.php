@@ -78,4 +78,12 @@ class UsersController extends APIController
             'mobile' => $request->mobile,
         ]);
     }
+    public function remove(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required',
+        ]);
+            $this->userRepository->delete($request->id);
+            return $this->respondSuccess('user removed successfully',[]);
+    }
 }

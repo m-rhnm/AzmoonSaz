@@ -34,10 +34,10 @@ class UsersTest extends TestCase
     {
         $response = $this->call('put','api/v1/users',
         [
-            'id'=>'200',
+            'id'=>'194',
             'fullName' => 'Zahra Rahnama',
             'email' => 'Zahra@gmail.com',
-            'mobile' => '09165341019'
+            'mobile' => '09165330324'
         ]);
         $this->assertEquals(200, $response->status());
         $this->seeJsonStructure(
@@ -61,9 +61,9 @@ class UsersTest extends TestCase
     {
         $response = $this->call('put','api/v1/users/change-password',
         [
-            'id'=>'200',
-            'password'=>'15161516',
-            'password_repeat'=>'15161516'
+            'id'=>'194',
+            'password'=>'176900',
+            'password_repeat'=>'176900'
         ]);
         $this->assertEquals(200, $response->status());
         $this->seeJsonStructure(
@@ -87,12 +87,13 @@ class UsersTest extends TestCase
     {
         $response = $this->call('delete','api/v1/users',
         [
-            'id'=>'200',
+            'id'=>'194',
         ]);
-        $this->assertEquals(202, $response->status());
-        $this->seeJsonStructure(
-        [
-          
+        $this->assertEquals(200, $response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data',
         ]);
     }
 }
