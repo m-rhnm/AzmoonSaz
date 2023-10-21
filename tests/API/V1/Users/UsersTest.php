@@ -34,7 +34,7 @@ class UsersTest extends TestCase
     {
         $response = $this->call('put','api/v1/users',
         [
-            'id'=>'194',
+            'id'=>'782',
             'fullName' => 'Zahra Rahnama',
             'email' => 'Zahra@gmail.com',
             'mobile' => '09165330324'
@@ -96,6 +96,48 @@ class UsersTest extends TestCase
             'data',
         ]);
     }
+    public function test_it_must_throw_a_exception_if_we_dont_send_parameters_to_delete_user()
+    {
+        $response = $this->call('put','api/v1/users',[]);
+        $this->assertEquals(422, $response->status());
+    }
+    public function test_should_read_users()
+    {
+        $pagesize = 2;
+        $response = $this->call('get','api/v1/users',
+        [
+        'page'=>1,
+        'pagesize'=>$pagesize,
+        ]);
+        $data= json_decode($response->getContent(),true);
+        $this->assertEquals($pagesize,count($data['data']));
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[]
+        ]);
+    }
+    public function test_should_get_search_users()
+    {   $pagesize = 3;
+        $userEmail = 'Mohamad@gmail.com';
+        $response = $this->call('get','api/v1/users',
+        [
+        'search'=>$userEmail,
+        'page'=>1,
+        'pagesize'=>$pagesize,
+        ]);
+        $data= json_decode($response->getContent(),true);
+        $this->assertEquals($data['data']['email'],$userEmail);
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[]
+        ]);
+    }
+
+
 }
 
 

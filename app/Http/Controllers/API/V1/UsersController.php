@@ -86,4 +86,14 @@ class UsersController extends APIController
             $this->userRepository->delete($request->id);
             return $this->respondSuccess('user removed successfully',[]);
     }
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'search'=>'nullable|string',
+            'page'=>'required|numeric',
+            'pagesize'=>'nullable|numeric',
+        ]);
+       $users = $this->userRepository->paginate($request->search,$request->page, $request->pagesize ?? 20);
+        return $this->respondSuccess('users',$users);
+    }
 }
