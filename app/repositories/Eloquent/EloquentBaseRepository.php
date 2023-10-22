@@ -2,6 +2,7 @@
 
 namespace App\repositories\Eloquent;
 
+use App\Models\User;
 use App\repositories\Contracts\RepositoryInterface;
 
 
@@ -11,7 +12,7 @@ class EloquentBaseRepository implements RepositoryInterface
     protected $model;
     public function create(array $data)
     {
-       return $this->model::create($data);
+       return User::create($data);
     }
     public function update(int $id,array $data)
     {
@@ -25,16 +26,19 @@ class EloquentBaseRepository implements RepositoryInterface
        }
        return $query->get();
     }
-    public function delete(array $where)
+    public function delete(int $id)
     {
-        $query = $this->model::query();
-        foreach($where as $key=>$value){
-         $query->where($key,$value);
-        }
-        return $query->delete();
+        // $query = $this->model::query();
+        // foreach($id as $key=>$value){
+        //  $query->where($key,$value);
+        // }
+        // return $query->delete();
     }
     public function find(int $id)
     {
        return $this->model::find($id);
+    }
+    public function paginate(string $search =null,int $page,int $pagesize = 20){
+
     }
 }

@@ -1,22 +1,24 @@
 <?php 
 namespace App\repositories\Json;
 
-
+use App\Entities\User\UserEntity;
+use App\Entities\User\UserJsonEntity;
 use App\repositories\Contracts\RepositoryInterface;
 
 class JsonBaseRepository implements RepositoryInterface
 {
+    protected $jsonModel;
     public function create(array $data){
-        if(file_exists('user.json')){
-            $users = json_decode(file_get_contents('user.json'),true);
+        if(file_exists($this->jsonModel)){
+            $users = json_decode(file_get_contents($this->jsonModel),true);
             $data['id'] = rand(1,1000);
             array_push($users,$data);
-            file_put_contents('user.json',json_encode($users));
+            file_put_contents($this->jsonModel,json_encode($users));
         }else{
             $users = [];
             $data['id'] = rand(1,1000);
             array_push($users,$data);
-            file_put_contents('user.json',json_encode($users));
+            file_put_contents($this->jsonModel,json_encode($users));
         }
         
     }
@@ -55,8 +57,15 @@ class JsonBaseRepository implements RepositoryInterface
         }
        // var_dump($users);
     }
-    public function find(int $id){
-
+    public function find(int $id)
+    {
+        $user = json_decode(file_get_contents( base_path() .'\user.json'),true);
+        foreach($user as $user){
+            if( $user['id'] == $id){
+                return new UserJsonEntity($user);
+             }
+         }
+        return new UserJsonEntity(null); 
     }
     public function paginate(string $search =null,int $page,int $pagesize = 20)
     {

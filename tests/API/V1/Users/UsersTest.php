@@ -119,7 +119,8 @@ class UsersTest extends TestCase
         ]);
     }
     public function test_should_get_search_users()
-    {   $pagesize = 3;
+    {   
+        $pagesize = 3;
         $userEmail = 'Mohamad@gmail.com';
         $response = $this->call('get','api/v1/users',
         [

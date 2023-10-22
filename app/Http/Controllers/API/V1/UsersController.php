@@ -12,6 +12,16 @@ class UsersController extends APIController
     {
         
     }
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'search'=>'nullable|string',
+            'page'=>'required|numeric',
+            'pagesize'=>'nullable|numeric',
+        ]);
+       $users = $this->userRepository->paginate($request->search,$request->page, $request->pagesize ?? 20);
+        return $this->respondSuccess('users',$users);
+    }
     public function store(Request $request)
     {
        $this->validate($request,
@@ -22,19 +32,18 @@ class UsersController extends APIController
             'password' => 'required|'
         ]);
 
-            $this->userRepository->create([
+           $newUser = $this->userRepository->create([
             'fullName' => $request->fullName,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'password' => app('hash')->make($request->password),
         ]);
-
         return $this->respondCreate('user created successfully',
         [
-            'fullName' => $request->fullName,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'password' => $request->password
+            'fullName' => $newUser->getfullName(),
+            'email' => $newUser->getEmail(),
+            'mobile' => $newUser->getMobile(),
+            'password' => $newUser->getPassword()
         ]);
     }
     public function updateInfo(Request $request)
@@ -83,17 +92,10 @@ class UsersController extends APIController
         $this->validate($request,[
             'id'=>'required',
         ]);
-            $this->userRepository->delete($request->id);
+          //  $this->userRepository->delete($request->id);
+            $user = $this->userRepository->find($request->id);
+            dd($user->getId(),$user->getEmail(), $user->getFullName());
             return $this->respondSuccess('user removed successfully',[]);
     }
-    public function index(Request $request)
-    {
-        $this->validate($request,[
-            'search'=>'nullable|string',
-            'page'=>'required|numeric',
-            'pagesize'=>'nullable|numeric',
-        ]);
-       $users = $this->userRepository->paginate($request->search,$request->page, $request->pagesize ?? 20);
-        return $this->respondSuccess('users',$users);
-    }
+  
 }
