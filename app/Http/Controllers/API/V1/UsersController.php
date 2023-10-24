@@ -98,10 +98,10 @@ class UsersController extends APIController
         $this->validate($request,[
             'id'=>'required',
         ]);
-        if( !$this->userRepository->find($request->id)){
+        if(!$this->userRepository->find($request->id)){
             return $this->respondNotFound('not found this user',[]);
         }
-           if($this->userRepository->delete($request->id)){
+           if(!$this->userRepository->delete($request->id)){
             return $this->respondInternalError('there is a error to delete,please try again',[]);
            }
             return $this->respondSuccess('user removed successfully',[]);

@@ -2,8 +2,7 @@
 namespace Tests\API\V1\Users;
 
 use App\repositories\Contracts\UserRepositoryInterface;
-use Tests\TestCase;
-
+use Tests\TestCase;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 class UsersTest extends TestCase
 {
     public function test_should_create_a_new_user()
@@ -89,7 +88,7 @@ class UsersTest extends TestCase
     public function test_should_delete_users()
     {
         $user = $this->createUser()[0];
-        $response = $this->call('delete','api/v1/users',
+        $response = $this->call('DELETE','api/v1/users',
         [
             'id'=>(string)$user->getId(),
         ]);
@@ -97,7 +96,7 @@ class UsersTest extends TestCase
         $this->seeJsonStructure([
             'success' ,
             'message' ,
-            'data',
+            'data'=>[],
         ]);
     }
     public function test_it_must_throw_a_exception_if_we_dont_send_parameters_to_delete_user()
@@ -141,7 +140,7 @@ class UsersTest extends TestCase
         $this->seeJsonStructure([
             'success' ,
             'message' ,
-            'data'=>[]
+            'data'=>[],
         ]);
     }
 

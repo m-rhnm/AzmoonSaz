@@ -12,11 +12,11 @@ class EloquentBaseRepository implements RepositoryInterface
     protected $model;
     public function create(array $data)
     {
-       return User::create($data);
+       return $this->model::create($data);
     }
     public function update(int $id,array $data)
     {
-        return User::where('id',$id)->update($data);
+        return $this->model::where('id',$id)->update($data);
     }
     public function all(array $where)
     {
@@ -28,11 +28,11 @@ class EloquentBaseRepository implements RepositoryInterface
     }
     public function delete(int $id) :bool
     {
-        return User::where('id',$id)->delete();
+        return $this->model::where('id',$id)->delete();
     }
     public function find(int $id)
     {
-       return User::find($id);
+       return $this->model::find($id);
     }
     public function paginate(string $search =null,int $page,int $pagesize = 20):array
     {

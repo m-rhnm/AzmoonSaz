@@ -2,6 +2,7 @@
 
 namespace App\repositories\Eloquent;
 
+use App\Models\User;
 use App\Entities\User\UserEntity;
 use App\Entities\User\UserEloquentEntity;
 use App\repositories\Eloquent\EloquentBaseRepository;
