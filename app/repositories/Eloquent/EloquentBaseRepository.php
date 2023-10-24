@@ -16,7 +16,7 @@ class EloquentBaseRepository implements RepositoryInterface
     }
     public function update(int $id,array $data)
     {
-        return $this->model::where('id',$id)->update($data);
+        return User::where('id',$id)->update($data);
     }
     public function all(array $where)
     {
@@ -26,19 +26,24 @@ class EloquentBaseRepository implements RepositoryInterface
        }
        return $query->get();
     }
-    public function delete(int $id)
+    public function delete(int $id) :bool
     {
-        // $query = $this->model::query();
-        // foreach($id as $key=>$value){
-        //  $query->where($key,$value);
-        // }
-        // return $query->delete();
+        return User::where('id',$id)->delete();
     }
     public function find(int $id)
     {
-       return $this->model::find($id);
+       return User::find($id);
     }
-    public function paginate(string $search =null,int $page,int $pagesize = 20){
+    public function paginate(string $search =null,int $page,int $pagesize = 20):array
+    {
+        if(is_null($search))
+        {
+           return User::paginate($pagesize,['fullName','mobile','email'],null,$page)->toArray()['data'];
+        }    
+        return User::orWhere('fullName',$search)
+        ->orWhere('mobile',$search)
+        ->orWhere('email',$search)
+        ->paginate($pagesize,['fullName','mobile','email'],null,$page)->toArray()['data'];
 
     }
 }

@@ -21,7 +21,7 @@ class UserJsonEntity implements UserEntity
     {
         return $this->user['email'];
     }
-    public function getmMobile(): string{
+    public function getMobile(): string{
         return $this->user['Mobile'];
     }
     public function getPassword(): string{

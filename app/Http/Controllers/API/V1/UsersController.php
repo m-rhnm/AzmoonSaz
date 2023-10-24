@@ -48,13 +48,13 @@ class UsersController extends APIController
     }
     public function updateInfo(Request $request)
     {
-        $this->validate($request,[
+      $this->validate($request,[
             'id'=>'required|string',
             'fullName' => 'required|string|min:3|max:255',
             'email' => 'required|email',
             'mobile' => 'required|string',
         ]);
-            $this->userRepository->update($request->id,
+            $user =  $this->userRepository->update($request->id,
         [
             'fullName' => $request->fullName,
             'email' => $request->email,
@@ -63,9 +63,9 @@ class UsersController extends APIController
 
             return $this->respondSuccess('user updated successfully',
         [
-            'fullName' => $request->fullName,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
+            'fullName' => $user->getfullName(),
+            'email' => $user->getEmail(),
+            'mobile' => $user->getMobile(),
         ]);
     }
     public function updatePassword(Request $request)
@@ -75,16 +75,22 @@ class UsersController extends APIController
             'password'=>'min:6|required_with:password_repeat|same:password_repeat',
             'password_repeat'=>'min:6',
         ]);
-            $this->userRepository->update($request->id,
-        [
-            'password' => app('hash')->make($request->password),
-        ]);
 
-            return $this->respondSuccess('user updated_password successfully',
+        try{
+            $user =  $this->userRepository->update($request->id,
+            [
+                'password' => app('hash')->make($request->password),
+            ]);
+    
+           
+        }catch(\Exception $e){
+            return $this->respondInternalError('faild to update password ',[]);
+        }
+        return $this->respondSuccess('user updated_password successfully',
         [
-            'fullName' => $request->fullName,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
+            'fullName' => $user->getfullName(),
+            'email' => $user->getEmail(),
+            'mobile' => $user->getMobile(),
         ]);
     }
     public function remove(Request $request)
@@ -92,9 +98,12 @@ class UsersController extends APIController
         $this->validate($request,[
             'id'=>'required',
         ]);
-          //  $this->userRepository->delete($request->id);
-            $user = $this->userRepository->find($request->id);
-            dd($user->getId(),$user->getEmail(), $user->getFullName());
+        if( !$this->userRepository->find($request->id)){
+            return $this->respondNotFound('not found this user',[]);
+        }
+           if($this->userRepository->delete($request->id)){
+            return $this->respondInternalError('there is a error to delete,please try again',[]);
+           }
             return $this->respondSuccess('user removed successfully',[]);
     }
   
