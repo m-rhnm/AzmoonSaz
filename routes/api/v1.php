@@ -24,6 +24,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router) {
     $router->group(['prefix'=> 'categories'], function () use ($router) {
         $router->post('', 'API\V1\CategoriesController@store');
         $router->DELETE('', 'API\V1\CategoriesController@remove');
+        $router->put('', 'API\V1\CategoriesController@updateInfo');
     });
        
 });

@@ -36,6 +36,7 @@ class CategoryTest extends TestCase
 
     public function test_ensure_we_can_delete_a_category(){
         $category = $this->createCategories()[0];
+       
         $response = $this->call('delete','api/v1/categories',[
             'id'=>(string)$category->getId(),
         ]);
@@ -45,6 +46,27 @@ class CategoryTest extends TestCase
             'message' ,
             'data',
         ]);
+    }
+    public function test_ensure_we_can_update_a_category(){
+        $category = $this->createCategories()[0];
+        $categoryData = 
+        [
+            'id' => (string)$category->getId(),
+            'name' => (string)$category->getName().'updated',  
+            'slug'=>(string)$category->getSlug().'updated',
+        ];
+        $response = $this->call('put','api/v1/categories',$categoryData);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->seeInDatabase('categories',$categoryData);
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[
+                'id',
+                'name',
+                'slug'
+            ],
+            ]);
     }
 
     private function createCategories(int $count=1):array{

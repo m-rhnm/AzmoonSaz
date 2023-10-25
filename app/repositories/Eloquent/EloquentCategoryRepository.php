@@ -17,5 +17,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $createCategory = parent::create($data);
         return new CategoryEloquentEntity($createCategory);
     }
+    public function update(int $id,array $data){
+        if(!parent::update($id, $data)){
+            throw new \RuntimeException("category dont update");
+        }
+       return new CategoryEloquentEntity(parent::find($id));
+    }
     
 }

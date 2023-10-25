@@ -44,4 +44,30 @@ class CategoriesController extends APIController
            }
             return $this->respondSuccess('category removed successfully',[]);
     }
+    public function updateInfo(Request $request)
+    {
+      $this->validate($request,[
+            'id'=>'required|string',
+            'name' => 'required|string|min:2|max:255',  
+            'slug'=>'required|string|min:2|max:255'
+            
+        ]);
+        if(!$this->categoryRepository->find($request->id)){
+            return $this->respondNotFound('not found this category',[]);
+        }
+            $user =  $this->categoryRepository->update($request->id,
+        [
+            'id'=>$request->id,
+            'name' => $request->name,  
+            'slug'=>$request->slug
+        ]);
+
+            return $this->respondSuccess('category updated successfully',
+        [
+            'id'=>$user->getId(),
+            'name' => $user->getName(),  
+            'slug'=>$user->getSlug()
+        ]);
+    }
+    
 }
