@@ -34,10 +34,10 @@ class CategoriesController extends APIController
     public function remove(Request $request)
     {
         $this->validate($request,[
-            'id'=>'required',
+            'id'=>'required|numeric',
         ]);
         if(!$this->categoryRepository->find($request->id)){
-            return $this->respondNotFound('not found this user',[]);
+            return $this->respondNotFound('not found this category',[]);
         }
            if(!$this->categoryRepository->delete($request->id)){
             return $this->respondInternalError('faild to remove category,please try again',[]);
