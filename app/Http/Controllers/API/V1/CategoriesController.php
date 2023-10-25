@@ -31,4 +31,17 @@ class CategoriesController extends APIController
             'slug'=> $newCategory->getSlug()
         ]);
     }
+    public function remove(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required',
+        ]);
+        if(!$this->categoryRepository->find($request->id)){
+            return $this->respondNotFound('not found this user',[]);
+        }
+           if(!$this->categoryRepository->delete($request->id)){
+            return $this->respondInternalError('faild to remove category,please try again',[]);
+           }
+            return $this->respondSuccess('category removed successfully',[]);
+    }
 }
