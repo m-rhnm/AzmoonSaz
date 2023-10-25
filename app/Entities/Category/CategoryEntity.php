@@ -1,5 +1,6 @@
 <?php
-namespace App\Entities\User;
+
+namespace App\Entities\Category;
 
 interface CategoryEntity
 {

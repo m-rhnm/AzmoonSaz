@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 
 
-class CtegoriesTests extends TestCase
+class CategoryTest extends TestCase
 {
     public function setUp(): void{
         parent::setUp();
@@ -29,7 +29,7 @@ class CtegoriesTests extends TestCase
             'data'=>[
                 'name',
                 'slug'
-            ]
+            ],
             ]);
     } 
 }

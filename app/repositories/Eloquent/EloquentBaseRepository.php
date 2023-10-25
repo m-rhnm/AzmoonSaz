@@ -2,7 +2,7 @@
 
 namespace App\repositories\Eloquent;
 
-use App\Models\User;
+
 use App\repositories\Contracts\RepositoryInterface;
 
 
@@ -38,9 +38,9 @@ class EloquentBaseRepository implements RepositoryInterface
     {
         if(is_null($search))
         {
-           return User::paginate($pagesize,['fullName','mobile','email'],null,$page)->toArray()['data'];
+           return $this->model::paginate($pagesize,['fullName','mobile','email'],null,$page)->toArray()['data'];
         }    
-        return User::orWhere('fullName',$search)
+        return $this->model::orWhere('fullName',$search)
         ->orWhere('mobile',$search)
         ->orWhere('email',$search)
         ->paginate($pagesize,['fullName','mobile','email'],null,$page)->toArray()['data'];

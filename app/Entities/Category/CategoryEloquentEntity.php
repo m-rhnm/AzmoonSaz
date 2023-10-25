@@ -2,13 +2,13 @@
 
 namespace App\Entities\Category;
 
-use App\Entities\User\CategoryEntity;
 use App\Models\Category;
+use App\Entities\Category\CategoryEntity;
 
 class CategoryEloquentEntity implements CategoryEntity
 {
     private $category;
-    public function __construct(Category|null $category )
+    public function __construct(Category $category )
     {
         $this->category = $category;
     }

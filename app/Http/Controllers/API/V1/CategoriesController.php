@@ -9,25 +9,26 @@ use App\repositories\Contracts\CategoryRepositoryInterface;
 
 class CategoriesController extends APIController
 {
-    public function __construct(private CategoryRepositoryInterface $CategoryRepository)
+   
+    public function __construct(private CategoryRepositoryInterface $categoryRepository)
     {  
     }    
     public function store(Request $request)
     {
        $this->validate($request,
         [
-            'name' => 'required|string',  
-            'slug'=>'required|string'
+            'name' => 'required|string|min:2|max:255',  
+            'slug'=>'required|string|min:2|max:255'
         ]);
 
-           $newCategory = $this->CategoryRepository->create([
+           $newCategory = $this->categoryRepository->create([
             'name' => $request->name,  
             'slug'=>$request->slug
         ]);
         return $this->respondCreate('category created successfully',
         [
-            'name' => $newCategory->name,  
-            'slug'=> $newCategory->slug
+            'name' => $newCategory->getName(),  
+            'slug'=> $newCategory->getSlug()
         ]);
     }
 }
