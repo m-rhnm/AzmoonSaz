@@ -22,6 +22,7 @@ class CategoryTest extends TestCase
             'slug'=>'category 75'
         ];
         $response = $this->call('POST','api/v1/categories',$newCategoryData);
+        //dd($response);
         $this->assertEquals(201, $response->getStatusCode());
         $this->seeInDatabase('categories',$newCategoryData);
         $this->seeJsonStructure([
