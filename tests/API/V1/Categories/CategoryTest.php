@@ -68,7 +68,50 @@ class CategoryTest extends TestCase
             ],
             ]);
     }
+    public function test_ensure_we_can_get_categories()
+    {
+        $this->createCategories(30);
+        $pagesize = 4;
+        $response = $this->call('get','api/v1/categories',
+        [
+        'page'=>1,
+        'pagesize'=>$pagesize,
+        ]);
+        $data= json_decode($response->getContent(),true);
+        $this->assertEquals($pagesize,count($data['data']));
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data',
+        ]);
+     
+    }
 
+    public function test_ensure_we_can_get_filtered_categories()
+    {
+       
+        $pagesize = 5;
+        $categorySlug = 'new-category';
+        $response = $this->call('get','api/v1/categories',
+        [
+        'search'=>$categorySlug,
+        'page'=>1,
+        'pagesize'=>$pagesize,
+        ]);
+        $data= json_decode($response->getContent(),true);
+        foreach($data['data'] as $user)
+        {
+            $this->assertEquals($user['slug'],$categorySlug);            
+        }       
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[],
+        ]);
+     
+    }
     private function createCategories(int $count=1):array{
         $categoryRepository = $this->app->make(CategoryRepositoryInterface::class);
         $newCategory = [
@@ -82,4 +125,5 @@ class CategoryTest extends TestCase
         }
         return $categories;        
     }
+  
 }

@@ -123,8 +123,8 @@ class UsersTest extends TestCase
     }
     public function test_should_get_search_users()
     {   
-        $pagesize = 5;
-        $userName = 'mohamad';
+        $pagesize = 1;
+        $userName = '09165341019';
         $response = $this->call('get','api/v1/users',
         [
         'search'=>$userName,
@@ -134,7 +134,7 @@ class UsersTest extends TestCase
         $data= json_decode($response->getContent(),true);
         foreach($data['data'] as $user)
         {
-            $this->assertEquals($user['fullName'],$userName);            
+            $this->assertEquals($user['mobile'],$userName);            
         }       
         $this->assertEquals(200,$response->status());
         $this->seeJsonStructure([
