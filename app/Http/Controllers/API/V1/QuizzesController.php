@@ -41,4 +41,20 @@ class QuizzesController extends APIController
             'duration'=>Carbon::parse($newQuiz->getDuration())->format('y-m-d'),
         ]);
     }
+    public function remove(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required'
+        ]);
+        if(!$this->quizRepository->find($request->id)){
+            return $this->respondNotFound('not found this quiz',[]);
+        }
+        if(!$this->quizRepository->delete($request->id)){
+            return $this->respondInternalError('faild to remove quiz,please try again',[]);
+        }
+            return $this->respondSuccess('quiz removed successfully',[]);
+        
+    }
+        
+    
 }
