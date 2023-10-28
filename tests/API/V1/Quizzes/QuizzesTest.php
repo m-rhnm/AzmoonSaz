@@ -14,8 +14,6 @@ class QuizzesTest extends TestCase
         parent::setUp();
         $this->artisan('migrate:refresh');
     }
-
-
     public function test_ensure_that_we_can_create_a_new_quiz()
     {
         $category = $this->createCategory()[0];
@@ -58,7 +56,41 @@ class QuizzesTest extends TestCase
         ]);
         
     }
-
+    public function test_ensure_that_we_can_get_quizzes(){
+        $quiz=$this->createQuiz(20);
+        $pageSize = 4;
+        $response = $this->call('get','api/v1/quizzes', [
+            'page'=>1,
+            'pageSize'=>$pageSize,
+        ]);
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals($pageSize,count($data['data']));
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data',
+        ]);
+    }
+    public function test_ensure_that_we_can_filtered_quizzes(){
+        $pageSize = 4;
+        $QuizTitle = 'quiz 1';
+       $response= $this->call('get','api/v1/quizzes',[
+            'search' => $QuizTitle,
+            'page'  => 1,
+            'pageSize'=>$pageSize,
+        ]);
+        $data = json_decode($response->getContent(), true);
+        foreach($data['data'] as $value){
+            $this->assertEquals($QuizTitle,$value['serach']);
+        }
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success',
+            'message',
+            'data'=>[],
+        ]);
+    }
     private function createCategory(int $count = 1):array
     {
         $categoryRepository = $this->app->make(CategoryRepositoryInterface::class);

@@ -55,6 +55,16 @@ class QuizzesController extends APIController
             return $this->respondSuccess('quiz removed successfully',[]);
         
     }
+    public function index(Request $request){
+        $this->validate($request,
+        [
+            'search'=>'nullable|string',
+            'page'=>'required|numeric',
+            'pagesize'=>'nullable|numeric',
+        ]);
+       $quizzes = $this->quizRepository->paginate($request->search,$request->page, $request->pageSize ?? 20,['title','description','start_date','duration']);
+        return $this->respondSuccess('quizzes',$quizzes);
+    }
         
     
 }
