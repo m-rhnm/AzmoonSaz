@@ -18,5 +18,12 @@ class EloquentQuizRepository extends EloquentBaseRepository implements QuizRepos
         return new QuizEloquentEntity ($createQuiz);
     }
  
+    public function update(int $id,array $data){
+        if(!parent::update($id, $data)){
+            throw new \RuntimeException("quiz dont update");
+        }
+       return new QuizEloquentEntity(parent::find($id));
+    }
+    
     
 }

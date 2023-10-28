@@ -10,6 +10,7 @@ interface QuizEntity
     public function getDescription(): string;
     public function getStartDate():string;
     public function getDuration():string;
+    public function getIsACtive():bool;
 
 
 }

@@ -91,6 +91,34 @@ class QuizzesTest extends TestCase
             'data'=>[],
         ]);
     }
+    public function test_ensure_that_we_can_update_quizzes(){
+        $newQuiz = $this->createQuiz()[0];
+        $newQuizData = [
+            'id'=> (string)$newQuiz->getId(),
+            'title'=>(string) $newQuiz->getTitle().'updated',
+            'category_id'=>(int) $newQuiz->getCategoryId(),
+            'description'=> (string)$newQuiz->getDescription().'updated',
+            'start_date'=> (string)$newQuiz->getStartDate(),
+            'duration'  =>(string) $newQuiz->getDuration(),
+            'is_active'=>false,
+        ];
+        $response = $this->call('put','api/v1/quizzes',$newQuizData);
+        $this->assertEquals(200,$response->status());
+        $this->seeInDatabase('quizzes',$newQuizData);
+        $this->seeJsonStructure([
+            'success',
+            'message',
+            'data'=>[
+                'title',
+                'description',
+                'category_id',
+               'start_date',
+               'duration',
+               'is_active'
+            ],
+
+        ]);
+    }
     private function createCategory(int $count = 1):array
     {
         $categoryRepository = $this->app->make(CategoryRepositoryInterface::class);
