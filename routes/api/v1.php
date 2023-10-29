@@ -32,4 +32,10 @@ $router->group(['prefix'=>'api/v1'], function () use ($router) {
             $router->put('', 'API\V1\QuizzesController@updateInfo');
             $router->get('', 'API\V1\QuizzesController@index');
         });
+        $router->group(['prefix'=> 'questions'], function () use ($router) {
+            $router->post('', 'API\V1\QuestionsController@store');
+            // $router->DELETE('', 'API\V1\QuizzesController@remove');
+            // $router->put('', 'API\V1\QuizzesController@updateInfo');
+            // $router->get('', 'API\V1\QuizzesController@index');
+        });
 });
