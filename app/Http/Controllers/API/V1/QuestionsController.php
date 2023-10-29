@@ -38,20 +38,22 @@ class QuestionsController extends APIController
             'score'=>$newQuestion->getScore(),
         ]);
     }
-    // public function remove(Request $request)
-    // {
-    //     $this->validate($request,[
-    //         'id'=>'required'
-    //     ]);
-    //     if(!$this->quizRepository->find($request->id)){
-    //         return $this->respondNotFound('not found this quiz',[]);
-    //     }
-    //     if(!$this->quizRepository->delete($request->id)){
-    //         return $this->respondInternalError('faild to remove quiz,please try again',[]);
-    //     }
-    //         return $this->respondSuccess('quiz removed successfully',[]);
+    public function remove(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required'
+        ]);
+        if(!$this->questionRepository->find($request->id)){
+            return $this->respondNotFound('not found this quiz',[]);
+        }
+        if(!$this->questionRepository->delete($request->id)){
+            return $this->respondInternalError('faild to remove question,please try again',[]);
+        }
+            return $this->respondSuccess('question removed successfully',[]);
         
-    // }
+    }
+
+
     // public function index(Request $request){
     //     $this->validate($request,
     //     [

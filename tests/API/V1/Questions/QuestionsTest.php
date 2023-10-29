@@ -10,7 +10,6 @@ class QuestionsTest  extends TestCase {
         parent::setUp();
         $this->artisan('migrate:refresh');
     }
-    
     public function test_ensure_we_can_create_a_new_question()
     {
         $newQuizzes =$this->createQuiz()[0];
@@ -46,4 +45,19 @@ class QuestionsTest  extends TestCase {
             ]
         ]);
     }
+    public function test_ensure_we_can_delete_a_question(){
+       $question=$this->createQuestion()[0];
+       $newQuestion=[
+        'id'=> $question->getId(),
+       ];
+        $response = $this->call('delete','api/v1/questions',$newQuestion);
+        $this->assertEquals('200',$response->getStatusCode());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[], 
+        ]);
+        
+    }
+  
 }
