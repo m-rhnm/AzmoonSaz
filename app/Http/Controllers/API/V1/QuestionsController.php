@@ -82,48 +82,14 @@ class QuestionsController extends APIController
         ]);
     }
 
-    // public function index(Request $request){
-    //     $this->validate($request,
-    //     [
-    //         'search'=>'nullable|string',
-    //         'page'=>'required|numeric',
-    //         'pagesize'=>'nullable|numeric',
-    //     ]);
-    //    $quizzes = $this->quizRepository->paginate($request->search,$request->page, $request->pageSize ?? 20,['title','description','start_date','duration']);
-    //     return $this->respondSuccess('quizzes',$quizzes);
-    // }
-    // public function updateInfo(Request $request){
-    //     $this->validate($request,[
-    //         'title' => 'required|string',  
-    //         'description'=>'required|string',
-    //         'category_id'=>'required|numeric',
-    //         'start_date'=>'required|date',
-    //         'duration'=>'required|date',
-    //     ]);
-    //     if(!$this->quizRepository->find($request->id)){
-    //         return $this->respondNotFound('not found this quiz',[]);
-    //     }
-    //        $quizData =  $this->quizRepository->update($request->id,
-    //     [
-    //         'title'=>$request->title,
-    //         'description'=>$request->description,
-    //         'category_id'=>$request->category_id,
-    //         'start_date'=>$request->start_date,
-    //         'duration'=>Carbon::parse($request->duration),
-    //         'is_active'=>$request->is_active
-    //     ]);
-
-    //         return $this->respondSuccess('quiz updated successfully',
-    //     [
-    //         'title'=>$quizData->getTitle(),
-    //         'description'=>$quizData->getDescription(),
-    //         'category_id'=>$quizData->getCategoryId(),
-    //         'start_date'=>$quizData->getStartDate(),
-    //         'duration'=>Carbon::parse($quizData->getDuration())->format('y-m-d'),
-    //         'is_active'=>$quizData->getIsActive()
-    //     ]);
-
-    // }
-        
-    
+    public function index(Request $request){
+        $this->validate($request,
+        [
+            'search'=>'nullable|string',
+            'page'=>'required|numeric',
+            'pageSize'=>'nullable|numeric',
+        ]);
+       $questions = $this->questionRepository->paginate($request->search,$request->page,$request->pageSize ?? 20,['title','quiz_id','options','score','is_active']);
+        return $this->respondSuccess('questions', $questions);
+    }
 }

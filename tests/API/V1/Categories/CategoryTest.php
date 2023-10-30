@@ -14,8 +14,6 @@ class CategoryTest extends TestCase
         parent::setUp();
         $this->artisan('migrate:refresh');
     }
-    
-    
     public function test_ensure_we_can_create_a_new_category(){
         $newCategoryData = 
         [
@@ -35,7 +33,6 @@ class CategoryTest extends TestCase
             ],
             ]);
     } 
-
     public function test_ensure_we_can_delete_a_category(){
         $category = $this->createCategories()[0];
        
@@ -89,7 +86,6 @@ class CategoryTest extends TestCase
         ]);
      
     }
-
     public function test_ensure_we_can_get_filtered_categories()
     {
        

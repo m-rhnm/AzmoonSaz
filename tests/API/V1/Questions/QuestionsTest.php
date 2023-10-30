@@ -55,10 +55,8 @@ class QuestionsTest  extends TestCase {
             'options'=>json_encode($question->getOption()),
             'is_active'=>QuestionStatus::ACTIVE,
             'score'=>50,
-        ];
-       // dd($newQuestionData);
-        $response = $this->call('put','api/v1/questions',$newQuestionData);
-        // dd($newQuestionData);
+        ];     
+        $response = $this->call('put','api/v1/questions',$newQuestionData);     
         $this->assertEquals('200',$response->getStatusCode());
         $this->seeInDatabase('questions',$newQuestionData);
         $this->seeJsonStructure([
@@ -71,8 +69,7 @@ class QuestionsTest  extends TestCase {
                 'is_active',
                 'score',
             ], 
-        ]);
-        
+        ]); 
     }
     public function test_ensure_we_can_delete_a_question(){
        $question=$this->createQuestion()[0];
@@ -87,6 +84,42 @@ class QuestionsTest  extends TestCase {
             'data'=>[], 
         ]);
         
+    }
+    public function test_ensure_we_can_get_question(){
+        $questions=$this->createQuestion(20);
+        $pageSize = 4;
+        $response = $this->call('get','api/v1/questions',[
+            'page'=>1,
+            'pageSize'=>$pageSize
+        ]);
+        $responseData=json_decode($response->getContent(),true);
+        $this->assertEquals($pageSize,count($responseData['data']));
+        $this->assertEquals(200,$response->getStatusCode());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data', 
+        ]);    
+
+    }
+    public function test_ensure_we_can_filterd_a_questions(){
+        $pageSize = 4;
+        $QuestionTitle = 'How old is messi?';
+       $response= $this->call('get','api/v1/quizzes',[
+            'search' => $QuestionTitle,
+            'page'  => 1,
+            'pageSize'=>$pageSize,
+        ]);
+        $data = json_decode($response->getContent(), true);
+        foreach($data['data'] as $value){
+            $this->assertEquals($QuestionTitle,$value['serach']);
+        }
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success',
+            'message',
+            'data'=>[],
+        ]);
     }
    
   
