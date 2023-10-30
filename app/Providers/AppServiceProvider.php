@@ -3,6 +3,13 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\repositories\Eloquent\EloquentQuizRepository;
+use App\repositories\Eloquent\EloquentUserRepository;
+use App\repositories\Eloquent\EloquentCategoryRepository;
+use App\repositories\Contracts\QuizRepositoryInterface;
+use App\repositories\Contracts\UserRepositoryInterface;
+
+use App\repositories\Contracts\CategoryRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,4 +22,11 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+    public function boot()
+    {
+        $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, EloquentCategoryRepository::class);
+        $this->app->bind(QuizRepositoryInterface::class, EloquentQuizRepository::class);
+    }
+
 }
