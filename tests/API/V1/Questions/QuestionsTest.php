@@ -45,6 +45,35 @@ class QuestionsTest  extends TestCase {
             ]
         ]);
     }
+    public function test_ensure_we_can_update_a_question()
+    {
+        $question=$this->createQuestion()[0];
+        $newQuestionData=[
+            'id'=> (string)$question->getId(),
+            'quiz_id'=>$question->getQuizId(),
+            'title'=>$question->getTitle().'updated',
+            'options'=>json_encode($question->getOption()),
+            'is_active'=>QuestionStatus::ACTIVE,
+            'score'=>50,
+        ];
+       // dd($newQuestionData);
+        $response = $this->call('put','api/v1/questions',$newQuestionData);
+        // dd($newQuestionData);
+        $this->assertEquals('200',$response->getStatusCode());
+        $this->seeInDatabase('questions',$newQuestionData);
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data'=>[
+                'quiz_id',
+                'title',
+                'options',
+                'is_active',
+                'score',
+            ], 
+        ]);
+        
+    }
     public function test_ensure_we_can_delete_a_question(){
        $question=$this->createQuestion()[0];
        $newQuestion=[
@@ -59,5 +88,6 @@ class QuestionsTest  extends TestCase {
         ]);
         
     }
+   
   
 }
