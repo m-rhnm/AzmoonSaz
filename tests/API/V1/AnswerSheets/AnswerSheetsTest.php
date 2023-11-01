@@ -43,4 +43,19 @@ class AnswerSheetsTest extends TestCase{
             ], 
         ]);
     }
+    public function test_ensure_we_can_delete_a_question(){
+        $answerSheet=$this->createAnswerSheet()[0];
+        $answer_sheet_data=[
+         'id'=> $answerSheet->getId(),
+        ];
+        //dd($answer_sheet_data);
+        $response = $this->call('delete','api/v1/answer-sheets',$answer_sheet_data);
+         $this->assertEquals('200',$response->getStatusCode());
+         $this->seeJsonStructure([
+             'success' ,
+             'message' ,
+             'data'=>[], 
+         ]);
+         
+     }
 }

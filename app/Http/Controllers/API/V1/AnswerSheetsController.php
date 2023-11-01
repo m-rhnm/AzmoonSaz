@@ -43,20 +43,22 @@ class AnswerSheetsController extends APIController
             'score'=>$newAnswerSheet->getScore(),
         ]);
     }
+    public function remove(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required'
+        ]);
+        if(!$this->answerSheetRepository->find($request->id)){
+            return $this->respondNotFound('not found this answer_sheet',[]);
+        }
+        if(!$this->answerSheetRepository->delete($request->id)){
+            return $this->respondInternalError('faild to remove answer_sheet,please try again',[]);
+        }
+            return $this->respondSuccess('answer_sheet removed successfully',[]);
+    }
 }
-    // public function remove(Request $request)
-    // {
-    //     $this->validate($request,[
-    //         'id'=>'required'
-    //     ]);
-    //     if(!$this->questionRepository->find($request->id)){
-    //         return $this->respondNotFound('not found this quiz',[]);
-    //     }
-    //     if(!$this->questionRepository->delete($request->id)){
-    //         return $this->respondInternalError('faild to remove question,please try again',[]);
-    //     }
-    //         return $this->respondSuccess('question removed successfully',[]);
-    // }
+
+   
     // public function updateInfo(Request $request){
     //     $this->validate($request,[
     //         'id'=>'required|numeric',
