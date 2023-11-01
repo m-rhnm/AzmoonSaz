@@ -43,7 +43,7 @@ class AnswerSheetsTest extends TestCase{
             ], 
         ]);
     }
-    public function test_ensure_we_can_delete_a_question(){
+    public function test_ensure_we_can_delete_a_answersheet(){
         $answerSheet=$this->createAnswerSheet()[0];
         $answer_sheet_data=[
          'id'=> $answerSheet->getId(),
