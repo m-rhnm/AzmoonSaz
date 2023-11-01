@@ -38,4 +38,10 @@ $router->group(['prefix'=>'api/v1'], function () use ($router) {
             $router->put('', 'API\V1\QuestionsController@updateInfo');
             $router->get('', 'API\V1\QuestionsController@index');
         });
+        $router->group(['prefix'=> 'answer-sheets'], function () use ($router) {
+            $router->post('', 'API\V1\AnswerSheetsController@store');
+            // $router->DELETE('', 'API\V1\QuestionsController@remove');
+            // $router->put('', 'API\V1\QuestionsController@updateInfo');
+            // $router->get('', 'API\V1\QuestionsController@index');
+        });
 });

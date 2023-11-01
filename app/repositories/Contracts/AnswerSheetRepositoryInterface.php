@@ -1,0 +1,9 @@
+<?php 
+namespace App\repositories\Contracts;
+
+use App\repositories\Contracts\RepositoryInterface;
+
+interface AnswerSheetRepositoryInterface extends RepositoryInterface
+{
+    
+}

@@ -2,11 +2,7 @@
 
 namespace Tests\API\V1\Categories;
 
-
 use Tests\TestCase;
-
-
-
 
 class CategoryTest extends TestCase
 {
