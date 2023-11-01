@@ -13,6 +13,32 @@ class CategoriesController extends APIController
         public function __construct(private CategoryRepositoryInterface $categoryRepository)
         {  
         }    
+        /**
+         * @OA\Get(
+         *      path="/api/v1/categories",
+         *      description="Returns all categories",
+         *      tags={"categories"},
+         *      
+         *      @OA\Parameter(
+         *          name="search",
+         *          in="path",
+         *          description="By passing this parameter you can filter the result"
+         *          required=false
+         *          @OA\Schema (type="string")
+         *      )
+         *   )
+         */
+        public function index(Request $request)
+        {
+            $this->validate($request,
+            [
+                'search'=>'nullable|string',
+                'page'=>'required|numeric',
+                'pagesize'=>'nullable|numeric',
+            ]);
+           $categories = $this->categoryRepository->paginate($request->search,$request->page, $request->pagesize ?? 20,['name','slug']);
+            return $this->respondSuccess('ctegories',$categories);
+        }
         public function store(Request $request)
         {
         $this->validate($request,
@@ -68,16 +94,5 @@ class CategoriesController extends APIController
                 'name' => $user->getName(),  
                 'slug'=>$user->getSlug()
             ]);
-        }
-        public function index(Request $request)
-        {
-            $this->validate($request,
-            [
-                'search'=>'nullable|string',
-                'page'=>'required|numeric',
-                'pagesize'=>'nullable|numeric',
-            ]);
-           $categories = $this->categoryRepository->paginate($request->search,$request->page, $request->pagesize ?? 20,['name','slug']);
-            return $this->respondSuccess('ctegories',$categories);
         }
 }
