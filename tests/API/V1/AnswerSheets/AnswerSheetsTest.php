@@ -48,7 +48,6 @@ class AnswerSheetsTest extends TestCase{
         $answer_sheet_data=[
          'id'=> $answerSheet->getId(),
         ];
-        //dd($answer_sheet_data);
         $response = $this->call('delete','api/v1/answer-sheets',$answer_sheet_data);
          $this->assertEquals('200',$response->getStatusCode());
          $this->seeJsonStructure([
@@ -58,4 +57,44 @@ class AnswerSheetsTest extends TestCase{
          ]);
          
      }
+     public function test_ensure_we_can_get_question(){
+        $answerSheet=$this->createAnswerSheet(20);
+        $pageSize = 4;
+        $response = $this->call('get','api/v1/answer-sheets',[
+            'page'=>1,
+            'pageSize'=>$pageSize
+        ]);
+        $responseData=json_decode($response->getContent(),true);
+        $this->assertEquals($pageSize,count($responseData['data']));
+        $this->assertEquals(200,$response->getStatusCode());
+        $this->seeJsonStructure([
+            'success' ,
+            'message' ,
+            'data', 
+        ]);    
+
+    }
+    public function test_ensure_we_can_filterd_a_questions(){
+        $pageSize = 4;
+        $answerSheetsAnswers = json_encode([
+            12=>1,
+            13=>2,
+            14=>3,
+        ]);
+       $response= $this->call('get','api/v1/quizzes',[
+            'search' => $answerSheetsAnswers,
+            'page'  => 1,
+            'pageSize'=>$pageSize,
+        ]);
+        $data = json_decode($response->getContent(), true);
+        foreach($data['data'] as $value){
+            $this->assertEquals($answerSheetsAnswers,$value['serach']);
+        }
+        $this->assertEquals(200,$response->status());
+        $this->seeJsonStructure([
+            'success',
+            'message',
+            'data'=>[],
+        ]);
+    }
 }

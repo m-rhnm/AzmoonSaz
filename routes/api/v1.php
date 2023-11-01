@@ -2,15 +2,6 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-use App\Models\User;
-
-// $router->get('a',function(){
-//     dd(User::create([
-//         'fullName' => 'zahra',
-
-//     ]));
-// });
-
 $router->group(['prefix'=>'api/v1'], function () use ($router) {
         $router->group(['prefix'=>'users'], function () use ($router) {
             $router->get('find', 'API\V1\UsersController@remove');
@@ -41,7 +32,6 @@ $router->group(['prefix'=>'api/v1'], function () use ($router) {
         $router->group(['prefix'=> 'answer-sheets'], function () use ($router) {
             $router->post('', 'API\V1\AnswerSheetsController@store');
             $router->DELETE('', 'API\V1\AnswerSheetsController@remove');
-            // $router->put('', 'API\V1\QuestionsController@updateInfo');
-            // $router->get('', 'API\V1\QuestionsController@index');
+            $router->get('', 'API\V1\AnswerSheetsController@index');
         });
 });

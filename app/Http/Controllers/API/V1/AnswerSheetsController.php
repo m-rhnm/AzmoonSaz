@@ -56,47 +56,15 @@ class AnswerSheetsController extends APIController
         }
             return $this->respondSuccess('answer_sheet removed successfully',[]);
     }
+     public function index(Request $request){
+        $this->validate($request,
+        [
+            'search'=>'nullable|string',
+            'page'=>'required|numeric',
+            'pageSize'=>'nullable|numeric',
+        ]);
+       $answerSheet = $this->answerSheetRepository->paginate($request->search,$request->page,$request->pageSize ?? 20,['score','quiz_id','answers','status','finished_at']);
+        return $this->respondSuccess('answer_sheet', $answerSheet);
+    }
 }
-
-   
-    // public function updateInfo(Request $request){
-    //     $this->validate($request,[
-    //         'id'=>'required|numeric',
-    //         'title' => 'required|string',  
-    //         'options'=>'required|json',
-    //         'quiz_id'=>'required|numeric',
-    //         'is_active'=>'required|numeric',
-    //         'score'=>'required|numeric'
-    //     ]);
-    //    //dd($request);
-    //     if(!$this->questionRepository->find($request->id)){
-    //         return $this->respondNotFound('not found this quiz',[]);
-    //     }
-    //     $newQuestion = $this->questionRepository->update($request->id,
-    //     [
-    //         'title' => $request->title,  
-    //         'options'=>$request->options,
-    //         'quiz_id'=>$request->quiz_id,
-    //         'is_active'=>$request->is_active,
-    //         'score'=>$request->score,
-    //     ]);
-    //         return $this->respondSuccess('quiz updated successfully',
-    //     [
-    //         'title' => $newQuestion->getTitle(),  
-    //         'options'=>json_encode($newQuestion->getOption()),
-    //         'quiz_id'=>$newQuestion->getQuizId(),
-    //         'is_active'=>$newQuestion->getIsActive(),
-    //         'score'=>$newQuestion->getScore(),
-    //     ]);
-    // }
-
-    // public function index(Request $request){
-    //     $this->validate($request,
-    //     [
-    //         'search'=>'nullable|string',
-    //         'page'=>'required|numeric',
-    //         'pageSize'=>'nullable|numeric',
-    //     ]);
-    //    $questions = $this->questionRepository->paginate($request->search,$request->page,$request->pageSize ?? 20,['title','quiz_id','options','score','is_active']);
-    //     return $this->respondSuccess('questions', $questions);
-    // }
+ 
